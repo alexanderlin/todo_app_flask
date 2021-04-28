@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Todo List{% endblock %}</h1>
+  {% if g.user %}
+    <a class="action" href="{{ url_for('todo.create') }}">New</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% for t in tl %}
+    <article class="t">
+      <header>
+        {% if g.user['id'] == t['author_id'] %}
+        <div class="about">by {{ t['username'] }} on {{ t['created'].strftime('%Y-%m-%d') }}</div>
+          <p class="body">{{ t['body'] }}</p>
+          <a class="action" href="{{ url_for('todo.update', id=t['id']) }}">Edit</a>
+        {% endif %}
+      </header>
+
+    </article>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+{% endblock %}
